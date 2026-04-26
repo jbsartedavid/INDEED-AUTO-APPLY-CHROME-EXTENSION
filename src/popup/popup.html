@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Application Assist</title>
+    <link rel="stylesheet" href="./popup.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="hero">
+        <p class="eyebrow">Application Assist</p>
+        <h1>Review first. Fill second.</h1>
+        <p class="intro">
+          Save your profile, inspect the current application page, and fill supported fields only after you confirm.
+        </p>
+      </header>
+
+      <section class="panel">
+        <h2>Profile</h2>
+        <form id="profile-form">
+          <label>
+            Full name
+            <input name="fullName" type="text" autocomplete="name" />
+          </label>
+          <label>
+            Email
+            <input name="email" type="email" autocomplete="email" />
+          </label>
+          <label>
+            Phone
+            <input name="phone" type="tel" autocomplete="tel" />
+          </label>
+          <label>
+            City
+            <input name="city" type="text" autocomplete="address-level2" />
+          </label>
+          <label>
+            Resume summary
+            <textarea name="summary" rows="4"></textarea>
+          </label>
+          <label>
+            Resume link
+            <input name="resumeLink" type="url" placeholder="https://example.com/resume.pdf" />
+          </label>
+          <label>
+            Resume file label
+            <input name="resumeFileName" type="text" placeholder="resume.pdf" />
+          </label>
+          <label>
+            Choose resume file for reference
+            <input id="resume-file" type="file" accept=".pdf,.doc,.docx,application/pdf" />
+          </label>
+          <button type="submit" class="primary">Save profile</button>
+        </form>
+      </section>
+
+      <section class="panel">
+        <h2>Current page</h2>
+        <div id="status" class="status">Ready</div>
+        <div class="actions">
+          <button id="inspect-page" type="button">Inspect fields</button>
+          <button id="fill-page" type="button" class="primary">Fill reviewed fields</button>
+          <button id="resume" type="button" class="ghost">Resume after halt</button>
+        </div>
+        <p class="hint">
+          Select the fields you want to fill. Resume file uploads remain manual on the target page.
+        </p>
+        <ul id="field-results" class="field-results"></ul>
+      </section>
+    </main>
+    <script type="module" src="./popup.js"></script>
+  </body>
+</html>

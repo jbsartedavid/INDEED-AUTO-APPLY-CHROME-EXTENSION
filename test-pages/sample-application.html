@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Application Assist Test Form</title>
+    <style>
+      :root {
+        font-family: "Segoe UI", sans-serif;
+        color: #1f2933;
+        background: #f5efe6;
+      }
+
+      body {
+        margin: 0;
+        background: linear-gradient(180deg, #f8f4ec, #eadfcf);
+      }
+
+      main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 40px 20px 60px;
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.84);
+        border-radius: 20px;
+        padding: 24px;
+        box-shadow: 0 20px 40px rgba(55, 43, 30, 0.12);
+      }
+
+      h1 {
+        margin-top: 0;
+        font-size: 2rem;
+      }
+
+      .grid {
+        display: grid;
+        gap: 14px;
+      }
+
+      label {
+        display: grid;
+        gap: 6px;
+        font-weight: 600;
+      }
+
+      input,
+      textarea,
+      select,
+      button {
+        font: inherit;
+      }
+
+      input,
+      textarea,
+      select {
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid #cdbda8;
+      }
+
+      button {
+        margin-top: 16px;
+        padding: 12px 16px;
+        border: 0;
+        border-radius: 999px;
+        background: #006d77;
+        color: white;
+      }
+
+      .note {
+        color: #52606d;
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="card">
+        <h1>Sample Application Form</h1>
+        <p class="note">Use this page to verify profile save, field inspection, selective fill, resume link fill, and manual upload reminders.</p>
+        <form class="grid">
+          <label for="full-name">Full name
+            <input id="full-name" name="fullName" autocomplete="name" type="text" />
+          </label>
+          <label for="email-address">Email address
+            <input id="email-address" name="email" autocomplete="email" type="email" />
+          </label>
+          <label for="phone-number">Phone number
+            <input id="phone-number" name="phone" autocomplete="tel" type="tel" />
+          </label>
+          <label for="city">City
+            <input id="city" name="city" autocomplete="address-level2" type="text" />
+          </label>
+          <label for="summary">Short summary
+            <textarea id="summary" name="summary" rows="5"></textarea>
+          </label>
+          <label for="resume-url">Resume URL
+            <input id="resume-url" name="resumeUrl" type="url" placeholder="https://example.com/resume.pdf" />
+          </label>
+          <label for="resume-file">Resume upload
+            <input id="resume-file" name="resumeUpload" type="file" accept=".pdf,.doc,.docx,application/pdf" />
+          </label>
+          <label for="location-type">Location type
+            <select id="location-type" name="locationType">
+              <option value="">Choose one</option>
+              <option>On-site</option>
+              <option>Hybrid</option>
+              <option>Remote</option>
+            </select>
+          </label>
+          <button type="button">Manual Submit Placeholder</button>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>

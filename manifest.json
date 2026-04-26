@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Application Assist",
+  "description": "A compliant job application assistant that helps review and fill forms after explicit user action.",
+  "version": "0.1.0",
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "storage",
+    "scripting",
+    "cookies"
+  ],
+  "host_permissions": [
+    "https://*.indeed.com/*",
+    "https://*.indeed.*/*"
+  ],
+  "background": {
+    "service_worker": "src/background/service-worker.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "Application Assist",
+    "default_popup": "src/popup/popup.html"
+  }
+}

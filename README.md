@@ -4,6 +4,14 @@ Application Assist is a Chrome Manifest V3 extension for assisted job applicatio
 
 The project is intentionally designed around user control, reviewability, and safe extension behavior. It does not auto-submit forms, attempt to bypass site protections, or impersonate a real user session.
 
+## Distribution status
+
+This repository is ready for:
+
+- unpacked installation in Chrome for local use
+- zip packaging for release artifacts
+- further preparation for Chrome Web Store submission
+
 ## Why this project exists
 
 Many job application flows repeat the same profile details across multiple forms. The goal here is to reduce repetitive typing while keeping the final decision and submission step with the user.
@@ -116,6 +124,37 @@ The robot detector runs before fill actions and looks for common CAPTCHA and rob
 4. Select this project folder.
 5. Open the extension details page and enable Allow access to file URLs if you want to use the local test pages.
 
+## Package for distribution
+
+Run the packaging script from PowerShell:
+
+```powershell
+Set-Location .
+.\scripts\package-extension.ps1 -Version 0.1.0
+```
+
+This creates a zip archive in `dist/` that can be used as a release artifact or as the basis for a Chrome Web Store submission package.
+
+## Chrome deployment options
+
+### Option 1: Local installation
+
+Use Load unpacked from the extensions page during development or personal use.
+
+### Option 2: Private organizational deployment
+
+For managed Chrome environments, publish the packaged extension through your organization’s Chrome management workflow.
+
+### Option 3: Chrome Web Store submission
+
+Before public submission, you should prepare:
+
+- final production icons
+- store listing copy and screenshots
+- support contact details
+- a finalized privacy policy
+- any required compliance disclosures for the permissions in the manifest
+
 ## How to use it
 
 1. Open a supported application page.
@@ -185,3 +224,5 @@ This repository contains a working MV3 extension scaffold with:
 - The workspace is intentionally lightweight and does not require a build step.
 - The extension is loaded unpacked directly from the repository folder.
 - Manual testing in Chrome is the primary validation path for now.
+- Placeholder icons are included and should be replaced with final branded assets before public release.
+- A starter privacy policy is included in `PRIVACY.md` and should be finalized before Web Store submission.

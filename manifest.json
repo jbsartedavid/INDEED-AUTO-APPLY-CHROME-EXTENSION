@@ -3,6 +3,7 @@
   "name": "Application Assist",
   "description": "A compliant job application assistant that helps review and fill forms after explicit user action.",
   "version": "0.1.0",
+  "minimum_chrome_version": "114",
   "permissions": [
     "activeTab",
     "tabs",
@@ -18,7 +19,17 @@
     "service_worker": "src/background/service-worker.js",
     "type": "module"
   },
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "32": "assets/icons/icon32.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  },
   "action": {
+    "default_icon": {
+      "16": "assets/icons/icon16.png",
+      "32": "assets/icons/icon32.png"
+    },
     "default_title": "Application Assist",
     "default_popup": "src/popup/popup.html"
   }

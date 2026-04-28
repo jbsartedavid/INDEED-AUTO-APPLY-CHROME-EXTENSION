@@ -31,4 +31,4 @@ Application Assist stores profile data that the user enters into the extension p
 
 ## Contact
 
-Replace this section with your preferred support or contact information before public distribution.
+Reach out at [jbsartedavid@gmail.com](mailto:jbsartedavid@gmail.com)

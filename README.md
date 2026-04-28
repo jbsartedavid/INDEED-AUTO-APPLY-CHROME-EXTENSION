@@ -1,228 +1,228 @@
+<div align="center">
+
 # Application Assist
 
-Application Assist is a Chrome Manifest V3 extension for assisted job application workflows. It helps a user inspect a page, review supported fields, and fill selected values from a saved profile only after explicit confirmation.
+**A smart, privacy-first Chrome extension that fills job application forms from a saved profile — only when you say so.**
 
-The project is intentionally designed around user control, reviewability, and safe extension behavior. It does not auto-submit forms, attempt to bypass site protections, or impersonate a real user session.
+[![Chrome MV3](https://img.shields.io/badge/Chrome-Manifest%20V3-4285F4?logo=googlechrome&logoColor=white)](https://developer.chrome.com/docs/extensions/mv3/intro/)
+[![Version](https://img.shields.io/badge/version-0.1.0-006d77)](https://github.com/jbsartedavid/INDEED-AUTO-APPLY-CHROME-EXTENSION/releases)
+[![License](https://img.shields.io/badge/license-MIT-teal)](LICENSE)
+[![Contact](https://img.shields.io/badge/email-jbsartedavid%40gmail.com-red?logo=gmail&logoColor=white)](mailto:jbsartedavid@gmail.com)
 
-## Distribution status
+</div>
 
-This repository is ready for:
+---
 
-- unpacked installation in Chrome for local use
-- zip packaging for release artifacts
-- further preparation for Chrome Web Store submission
+## What is Application Assist?
 
-## Why this project exists
+Filling out job applications is repetitive. The same name, email, phone number, city, and summary appear on dozens of application forms. Application Assist eliminates that friction.
 
-Many job application flows repeat the same profile details across multiple forms. The goal here is to reduce repetitive typing while keeping the final decision and submission step with the user.
+Open the popup, save your profile once, navigate to any application page, inspect the detected fields, pick exactly which ones to fill, and click one button. The form is pre-filled. You review it. You submit it.
 
-Application Assist focuses on:
+**You stay in control at every step.** The extension never submits forms for you, never uploads files silently, and stops immediately if it detects a CAPTCHA or robot-check.
 
-- reusable profile data stored in Chrome sync storage
-- page inspection before any fill action happens
-- per-field review so the user can decide exactly what gets filled
-- immediate halt behavior when robot-check or CAPTCHA signals appear
-- manual handling for resume uploads and final submission
+---
 
-## Core capabilities
+## Features at a glance
 
-### Profile management
+| Feature | Details |
+|---|---|
+| **Saved profile** | Name, email, phone, city, summary, resume URL, and resume filename stored in Chrome sync storage |
+| **Page inspection** | Scans the current tab and maps recognized fields to your profile |
+| **Selective fill** | Checkboxes per detected field — fill only what you approve |
+| **Resume guidance** | Identifies file upload fields and reminds you to upload manually |
+| **CAPTCHA halt** | Detects robot-check signals and freezes the assistant immediately |
+| **Badge indicator** | Extension badge shows `ON` or `STOP` at a glance |
+| **No auto-submit** | Submission is always a deliberate manual action |
+| **No tracking** | Zero analytics, zero external data transmission |
 
-- Saves full name, email, phone, city, summary, resume link, and resume file label.
-- Uses Chrome sync storage so the profile can follow the signed-in browser session.
-- Keeps the resume file itself out of storage and only remembers its label for manual upload guidance.
+---
 
-### Page inspection
+## How it works
 
-- Scans the current tab for supported input, textarea, select, and resume-upload patterns.
-- Maps recognizable labels and attributes to saved profile values.
-- Presents detected fields in the popup for review before filling.
-
-### Selective fill flow
-
-- Lets the user opt in field by field with checkboxes.
-- Fills only checked, supported fields.
-- Leaves unsupported or missing values untouched.
-- Treats resume file inputs as manual-only and surfaces that clearly in the popup.
-
-### Safety and halt logic
-
-- Detects visible robot-check and CAPTCHA-related signals on the page.
-- Immediately pauses the assistant if those signals are found.
-- Updates the extension badge to `STOP` so the state is obvious.
-- Requires an explicit resume action from the popup before any further use.
-
-## What this extension does not do
-
-- It does not auto-apply to jobs.
-- It does not auto-submit forms.
-- It does not bypass CAPTCHA or anti-bot systems.
-- It does not spoof headers, browser fingerprints, cookies, or IP identity.
-- It does not upload files silently.
-
-## Project structure
-
-```text
-.
-|-- .github/
-|-- manifest.json
-|-- src/
-|   |-- background/
-|   |   `-- service-worker.js
-|   |-- page/
-|   |   |-- page-assistant.js
-|   |   `-- robot-detector.js
-|   `-- popup/
-|       |-- popup.html
-|       |-- popup.css
-|       `-- popup.js
-`-- test-pages/
-	|-- robot-check.html
-	`-- sample-application.html
+```
+┌─────────────────────────────────────────────────────────┐
+│                     Extension Popup                     │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  │
+│  │  Save Profile│  │Inspect Fields│  │  Fill Fields  │  │
+│  └──────────────┘  └──────┬───────┘  └──────┬───────┘  │
+└─────────────────────────── │ ────────────────│──────────┘
+                             │                 │
+                  chrome.scripting.executeScript()
+                             │                 │
+┌────────────────────────────┼─────────────────┼──────────┐
+│            Active Tab Page │                 │          │
+│  ┌─────────────────────────▼─────────────────▼───────┐  │
+│  │  robot-detector.js → page-assistant.js            │  │
+│  │  1. Scan for CAPTCHA signals → halt if found      │  │
+│  │  2. Find form fields → map to profile keys        │  │
+│  │  3. Fill only user-selected fields                │  │
+│  └───────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────┘
+                             │
+          ┌──────────────────▼──────────────────┐
+          │      service-worker.js               │
+          │  Manages halt state + badge updates  │
+          └──────────────────────────────────────┘
 ```
 
-## Architecture overview
+---
 
-### Manifest
+## Getting started
 
-The extension uses Manifest V3 with a service worker background script, a popup UI, and dynamic script execution through `chrome.scripting`.
+### Option 1 — Load unpacked (local use, no build required)
 
-### Background service worker
+1. Clone or download this repository.
+2. Open Chrome and go to `chrome://extensions`.
+3. Enable **Developer mode** (toggle in the top right).
+4. Click **Load unpacked**.
+5. Select the root folder of this project.
+6. The extension icon appears in your toolbar immediately.
 
-The service worker manages assistant state and badge updates. When a CAPTCHA or robot-check is detected, it stores the halted state and updates the browser action badge.
+> **Tip:** On the extension details page, enable **Allow access to file URLs** if you want to test against the local HTML pages included in `test-pages/`.
 
-### Popup UI
+### Option 2 — Package as a zip for distribution
 
-The popup is the control center. It lets the user:
-
-- save and update profile data
-- inspect the active page for supported fields
-- choose exactly which fields to fill
-- resume the assistant after a halt
-
-### Page assistant
-
-The injected page assistant analyzes the current page, identifies supported fields, applies selected values, and reports the result back to the popup.
-
-### Robot detector
-
-The robot detector runs before fill actions and looks for common CAPTCHA and robot-check indicators in page text and DOM attributes.
-
-## Permissions
-
-- `activeTab`: allows the extension to operate on the current page after user interaction
-- `tabs`: allows the popup to identify the current active tab
-- `storage`: stores profile data and assistant state
-- `scripting`: injects the page assistant and robot detector when needed
-- `cookies`: reserved for session-awareness scenarios, though the current implementation does not spoof or alter identity-related behavior
-
-## Load in Chrome
-
-1. Open `chrome://extensions`.
-2. Enable Developer mode.
-3. Click Load unpacked.
-4. Select this project folder.
-5. Open the extension details page and enable Allow access to file URLs if you want to use the local test pages.
-
-## Package for distribution
-
-Run the packaging script from PowerShell:
+Run the included PowerShell packaging script:
 
 ```powershell
-Set-Location .
+cd C:\path\to\INDEEDAUTOAPPLY
 .\scripts\package-extension.ps1 -Version 0.1.0
 ```
 
-This creates a zip archive in `dist/` that can be used as a release artifact or as the basis for a Chrome Web Store submission package.
+A distributable zip is created at `dist/application-assist-0.1.0.zip`. This file can be attached to a GitHub release or submitted to the Chrome Web Store developer dashboard.
 
-## Chrome deployment options
+### Option 3 — Chrome Web Store
 
-### Option 1: Local installation
+Before submitting publicly, prepare:
 
-Use Load unpacked from the extensions page during development or personal use.
+- Final branded icons (replace placeholders in `assets/icons/`)
+- Store listing screenshots (min. 1280×800 or 640×400)
+- Store listing description (short + long)
+- Finalized privacy policy — see `PRIVACY.md`
+- Support email in the listing (use `jbsartedavid@gmail.com`)
 
-### Option 2: Private organizational deployment
+---
 
-For managed Chrome environments, publish the packaged extension through your organization’s Chrome management workflow.
+## Usage walkthrough
 
-### Option 3: Chrome Web Store submission
+**1. Save your profile**
 
-Before public submission, you should prepare:
+Open the extension popup. Fill in your name, email, phone, city, and summary. Add a resume URL and optionally pick a local resume file so it can remind you of the filename during uploads. Click **Save profile**.
 
-- final production icons
-- store listing copy and screenshots
-- support contact details
-- a finalized privacy policy
-- any required compliance disclosures for the permissions in the manifest
+**2. Navigate to an application page**
 
-## How to use it
+Go to any job application form — on Indeed or elsewhere.
 
-1. Open a supported application page.
-2. Open the popup and save your profile.
-3. Optionally choose a local resume file so the popup can remember its file name.
-4. Click Inspect fields.
-5. Review the detected fields.
-6. Keep only the checkboxes for fields you want filled.
-7. Click Fill reviewed fields.
-8. Upload your resume manually if the page requires a file input.
-9. Review the completed form and submit it yourself.
+**3. Inspect the page**
 
-## Local test pages
+Click **Inspect fields** in the popup. The extension scans the page and lists all supported fields with checkboxes. Each field shows what profile value it maps to.
 
-Two local test pages are included to make validation easier without depending on a live website.
+**4. Select what to fill**
 
-### `test-pages/sample-application.html`
+Uncheck any fields you want to leave alone. Resume upload fields are shown but are always marked manual-only.
 
-Use this page to verify:
+**5. Fill and review**
 
-- profile save behavior
-- field detection
-- per-field checkbox review
-- selective fill behavior
-- manual resume upload reminders
+Click **Fill reviewed fields**. Only the checked fields are updated on the page. Review everything before submitting.
 
-### `test-pages/robot-check.html`
+**6. Submit manually**
 
-Use this page to verify:
+The submit button is always yours to click. The extension never submits for you.
 
-- robot-check detection
-- halt behavior
-- badge update to `STOP`
-- resume-after-halt flow
+---
+
+## Safety and halt behavior
+
+If Application Assist detects any of the following on the active page it **immediately stops** and updates the badge to `STOP`:
+
+- CAPTCHA elements or iframes
+- Text containing "are you a robot", "verify you are human", or "security check"
+- Common CAPTCHA class/id patterns (`g-recaptcha`, `hcaptcha`, `cf-challenge`)
+
+The popup displays the halt reason and an explicit **Resume after halt** button so you can reset the state once the page is safe.
+
+---
+
+## Project structure
+
+```
+INDEEDAUTOAPPLY/
+├── assets/
+│   └── icons/                  # Extension icons (16, 32, 48, 128px)
+├── scripts/
+│   └── package-extension.ps1   # Packaging script for release zips
+├── src/
+│   ├── background/
+│   │   └── service-worker.js   # Halt state management + badge updates
+│   ├── page/
+│   │   ├── page-assistant.js   # Field detection, mapping, and fill logic
+│   │   └── robot-detector.js   # CAPTCHA / robot-check signal detection
+│   └── popup/
+│       ├── popup.html          # Extension popup UI
+│       ├── popup.css           # Popup styles
+│       └── popup.js            # Popup interaction logic
+├── test-pages/
+│   ├── sample-application.html # Local form for testing fill behavior
+│   └── robot-check.html        # Local page for testing halt behavior
+├── manifest.json               # Chrome MV3 extension manifest
+├── PRIVACY.md                  # Privacy policy for distribution
+└── README.md
+```
+
+---
+
+## Permissions explained
+
+| Permission | Why it's needed |
+|---|---|
+| `activeTab` | Operate on the current tab only after user interaction |
+| `tabs` | Identify the active tab from the popup |
+| `storage` | Save profile data and assistant pause state |
+| `scripting` | Inject page assistant and robot detector when needed |
+| `cookies` | Reserved for session-awareness; no identity spoofing |
+
+---
 
 ## Manual test checklist
 
-1. Load the extension unpacked in Chrome.
-2. Enable access to file URLs in the extension settings.
-3. Open `test-pages/sample-application.html`.
-4. Save a sample profile from the popup.
-5. Run Inspect fields and confirm the detected list appears.
-6. Uncheck one field and confirm only the remaining checked fields are filled.
-7. Confirm the resume upload field is reported as manual-only.
-8. Open `test-pages/robot-check.html`.
-9. Confirm the assistant halts and the badge changes to `STOP`.
-10. Use Resume after halt and confirm the badge changes back to `ON`.
+Use the local test pages included in the `test-pages/` directory.
 
-## Current status
+- [ ] Load the extension unpacked in Chrome
+- [ ] Enable Allow access to file URLs
+- [ ] Open `test-pages/sample-application.html`
+- [ ] Save a profile from the popup and confirm the saved status message
+- [ ] Click Inspect fields and confirm the field list appears with checkboxes
+- [ ] Uncheck one field, click Fill reviewed fields, confirm only checked fields update
+- [ ] Confirm resume upload fields are listed as manual-only
+- [ ] Open `test-pages/robot-check.html`
+- [ ] Confirm the badge changes to `STOP` and the popup shows the halt message
+- [ ] Click Resume after halt and confirm the badge returns to `ON`
 
-This repository contains a working MV3 extension scaffold with:
+---
 
-- popup profile management
-- page inspection and selective fill
-- robot-check detection and halt state
-- local test fixtures for manual verification
+## Roadmap
 
-## Next improvements
+- [ ] Richer field matching patterns for more application sites
+- [ ] Field preview showing the exact value before filling
+- [ ] Profile export and import (JSON)
+- [ ] Popup activity log for easier debugging
+- [ ] Branded icon set
 
-- richer field matching for more application sites
-- explicit field preview of the value that will be filled
-- optional export and import for saved profile data
-- popup activity log for clearer test diagnostics
+---
 
-## Development notes
+## Contributing
 
-- The workspace is intentionally lightweight and does not require a build step.
-- The extension is loaded unpacked directly from the repository folder.
-- Manual testing in Chrome is the primary validation path for now.
-- Placeholder icons are included and should be replaced with final branded assets before public release.
-- A starter privacy policy is included in `PRIVACY.md` and should be finalized before Web Store submission.
+Pull requests are welcome. For significant changes please open an issue first.
+
+---
+
+## Contact
+
+Questions, feedback, or issues — reach out at [jbsartedavid@gmail.com](mailto:jbsartedavid@gmail.com)
+
+---
+
+## License
+
+MIT — see `LICENSE` for details.
